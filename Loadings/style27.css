@@ -1,0 +1,135 @@
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  font-size: 62.5%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: #7981B2;
+}
+
+svg {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40rem;
+  height: 40rem;
+  margin-left: -20rem;
+  margin-top: -20rem;
+  overflow: visible;
+}
+
+.jumper {
+  fill: none;
+  stroke: #383845;
+  stroke-width: 10px;
+  stroke-dashoffset: 0;
+  stroke-dasharray: 0, 136.71884px;
+  -webkit-animation: animJumper 1.3s linear infinite;
+          animation: animJumper 1.3s linear infinite;
+}
+
+.jumper.clone {
+  opacity: 0.05;
+  -webkit-transform: translateY(200px) scaleY(-1);
+          transform: translateY(200px) scaleY(-1);
+}
+
+.circleL {
+  opacity: 0;
+  -webkit-transform-origin: 47.2px 95.6px;
+          transform-origin: 47.2px 95.6px;
+  -webkit-animation: animCircle 1.3s infinite;
+          animation: animCircle 1.3s infinite;
+}
+
+.circleR {
+  opacity: 0;
+  -webkit-transform-origin: 136.2px 95.6px;
+          transform-origin: 136.2px 95.6px;
+  -webkit-animation: animCircle 1.3s 0.728s infinite;
+          animation: animCircle 1.3s 0.728s infinite;
+}
+
+@-webkit-keyframes animJumper {
+  8% {
+    stroke-dasharray: 20.50783px, 136.71884px;
+  }
+  32% {
+    stroke-dasharray: 41.01565px, 136.71884px;
+    stroke-dashoffset: -47.85159px;
+  }
+  56% {
+    stroke-dasharray: 20.50783px, 136.71884px;
+    stroke-dashoffset: -116.21102px;
+  }
+  64% {
+    stroke-dasharray: 0, 136.71884px;
+    stroke-dashoffset: -136.71884px;
+  }
+}
+
+@keyframes animJumper {
+  8% {
+    stroke-dasharray: 20.50783px, 136.71884px;
+  }
+  32% {
+    stroke-dasharray: 41.01565px, 136.71884px;
+    stroke-dashoffset: -47.85159px;
+  }
+  56% {
+    stroke-dasharray: 20.50783px, 136.71884px;
+    stroke-dashoffset: -116.21102px;
+  }
+  64% {
+    stroke-dasharray: 0, 136.71884px;
+    stroke-dashoffset: -136.71884px;
+  }
+}
+
+@-webkit-keyframes animCircle {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    -webkit-transform: scale(3);
+            transform: scale(3);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes animCircle {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    -webkit-transform: scale(3);
+            transform: scale(3);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.check-out {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  font-size: 2rem;
+  color: #fff;
+}
+/*# sourceMappingURL=style27.css.map */

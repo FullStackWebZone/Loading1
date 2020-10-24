@@ -1,0 +1,72 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+  }
+  html, body {
+    font-size: 62.5%;
+  }
+  
+  body {
+    overflow: hidden;
+    background: #151315;
+  }
+  
+  $n: 20;
+  $w: 35rem;
+  $h: 35rem;
+  $duration: 2s;
+  $step: $duration/$n;
+  
+  .demo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: $w;
+    height: $h;
+    margin-left: $w/-2;
+    margin-top: $h/-2;
+    animation: rotation $duration*1.5 linear infinite;
+  
+    &__half {
+      overflow: hidden;
+      position: relative;
+      height: 50%;
+  
+      &-2 {
+        transform: scaleY(-1);
+      }
+    }
+  
+    &__line {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 100%;
+      border: 0.5rem solid #fff;
+      transition: transform 5s;
+      bottom: 0;
+      transform-origin: 50% 100%;
+      border-bottom: none;
+      border-top-left-radius: $h/2;
+      border-top-right-radius: $h/2;
+  
+      @for $i from 1 through $n {
+        &:nth-child(#{$i}) {
+          width: 5% * $i;
+          height: 5% * $i;
+          animation: anim $duration $i*$step ease-in infinite; 
+        }
+      }
+    }
+  }
+  
+  @keyframes anim {
+    50% {
+      transform: translateX(-50%) rotate(-179deg);
+    }
+  }
+  @keyframes rotation {
+    to {
+      transform: rotate(360deg);
+    }
+  }

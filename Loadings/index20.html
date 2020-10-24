@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="style20.css">
+	
+	</head>
+	<body>
+		<div class="start"></div>
+    </body>
+    <script type="text/javascript">
+    const matrixSize = 11; // play with this
+
+// this code was written at 2am so you can't use it against me
+const itemsTotal = matrixSize**2;
+const directions = ['top', 'right', 'bottom', 'left'];
+const directionsMapping = {
+  top: [0, -1],
+  right: [1, 0],
+  bottom: [0, 1],
+  left: [-1, 0],
+}
+let curBlock = 1;
+let curDirection = 0;
+let directionCounter = 0;
+let directionSteps = 2;
+const curPos = [0,0];
+const $start = document.querySelector('.start');
+const maxTotalTime = 4000;
+let stepDelay = maxTotalTime / itemsTotal;
+if (stepDelay > 100) stepDelay = 100;
+
+const showBlock = ($block, i) => {
+  setTimeout(() => {
+    $block.classList.add('s--visible');
+  }, i * stepDelay);
+}
+
+for (let i = 0; i < itemsTotal; i++) {
+  const $block = document.createElement('div');
+  $block.innerHTML = i + 1;
+  const direction = directions[curDirection % directions.length];
+  const posChange = directionsMapping[direction];
+  $block.classList.add('block', `s--to-${direction}`);
+  
+  if (i !== 0) {
+    curPos[0] += posChange[0];
+    curPos[1] += posChange[1];
+  }
+  $block.style.left = `${curPos[0] * 100}%`;
+  $block.style.top = `${curPos[1] * 100}%`;
+  $block.style.zIndex = itemsTotal - i;
+  $start.appendChild($block);
+  curBlock++;
+  if (directionCounter === directionSteps/2) curDirection++;
+  if (directionCounter < directionSteps) {
+    directionCounter++;
+  } else {
+    curDirection++;
+    directionSteps += 2;
+    directionCounter = 1;
+  }
+  
+  showBlock($block, i);
+}
+    </script>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style29.css">
+
+</head>
+
+<body>
+    <svg class="sphere" viewBox="0 0 400 400">
+        <defs>
+            <linearGradient id="blackGrad" gradientTransform="rotate(0)">
+                <stop offset="0%" stop-color="#333" />
+                <stop offset="100%" stop-color="#000" />
+            </linearGradient>
+            <linearGradient id="redGrad" gradientTransform="rotate(90)" x1="100%" x2="0%">
+                <stop offset="0%" stop-color="#EF9A9A" />
+                <stop offset="100%" stop-color="#C62828" />
+            </linearGradient>
+            <linearGradient id="purpleGrad" gradientTransform="rotate(0)" x1="100%" x2="0%">
+                <stop offset="0%" stop-color="#CE93D8" />
+                <stop offset="100%" stop-color="#6A1B9A" />
+            </linearGradient>
+            <linearGradient id="greenGrad" gradientTransform="rotate(90)">
+                <stop offset="0%" stop-color="#A5D6A7" />
+                <stop offset="100%" stop-color="#2E7D32" />
+            </linearGradient>
+        </defs>
+        <path class="black" fill="url(#blackGrad)" data-point="200" data-type="x" />
+        <path class="red" fill="url(#redGrad)" data-point="200" data-type="t" />
+        <path class="purple" fill="url(#purpleGrad)" data-point="-200" data-type="x" />
+        <path class="green" fill="url(#greenGrad)" data-point="-200" data-type="y" />
+        <text x="200" y="200" fill="none" stroke="#fff" stroke-width="1" font-size="70" font-family="Open Sans"
+            alignment-baseline="central" text-anchor="middle">LOADING</text>
+    </svg>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var r = 200,
+                frame = 1000 / 60,
+                $black = $(".black"),
+                $newBlack,
+                $red = $(".red"),
+                $purple = $(".purple"),
+                $green = $(".green");
+
+            function squareEasing(t, b, c, d, dir) {
+                return (dir) ? b - c * Math.pow(t, t / d) : b + c * Math.pow(t, t / d);
+            }
+            // i just created this easing randomly :D
+            function someEasing(t, b, c, d, dir) {
+                return (dir) ? b - c * Math.pow(t, Math.abs(t / d - 0.5) * 2) : b + c * Math.pow(t, Math.abs(t / d - 0.5) * 2);
+            }
+
+            function animateSphere($path, time) {
+                var numOfSteps = time / frame,
+                    step = r * 2 / numOfSteps,
+                    anim = +$path.attr("data-point"),
+                    startAnim = +$path.attr("data-point"),
+                    posStart = anim > 0,
+                    endPoint = posStart ? 0 - anim : Math.abs(anim),
+                    staticDir = posStart ? 0 : 1,
+                    dir = posStart ? 1 : 0,
+                    curIter = 0,
+                    activeP = $path.attr("data-type"),
+                    staticD,
+                    dynamicD;
+
+                if (activeP === "x") {
+                    staticD = "M" + Math.abs(anim) + ",0 a200,200 0 1," + staticDir + " 0,400 ";
+                } else {
+                    staticD = "M0," + Math.abs(anim) + " a200,200 0 1," + staticDir + " 400,0";
+                }
+
+                function animate() {
+                    curIter++;
+
+                    if (posStart && anim <= 0) {
+                        dir = 0;
+                    } else if (!posStart && anim >= 0) {
+                        dir = 1;
+                    }
+
+                    if (activeP === "x") {
+                        dynamicD = "a" + Math.abs(anim) + ",200 0 1," + dir + " 0,-400";
+                    } else {
+                        dynamicD = "a200," + Math.abs(anim) + " 0 1," + dir + " -400, 0";
+                    }
+
+                    $path.attr("d", staticD + dynamicD);
+                    //anim = posStart ? anim - step : anim + step;
+                    //anim = squareEasing(curIter, startAnim, step, numOfSteps, posStart);
+                    anim = someEasing(curIter, startAnim, step, numOfSteps, posStart);
+
+                    if (curIter > numOfSteps) {
+                        console.log("check")
+                        if (activeP === "x") {
+                            dynamicD = "a" + Math.abs(endPoint) + ",200 0 1," + dir + " 0,-400";
+                        } else {
+                            dynamicD = "a200," + Math.abs(endPoint) + " 0 1," + dir + " -400, 0";
+                        }
+                        $path.attr("d", staticD + dynamicD);
+                        return;
+                    }
+
+                    requestAnimationFrame(animate);
+                }
+
+                animate();
+            }
+
+            function fullAnimation(stepTime, delay) {
+                $purple.attr("d", "");
+                if ($newBlack) animateSphere($newBlack, stepTime);
+                animateSphere($black, stepTime);
+
+                setTimeout(function () {
+                    if ($newBlack) $newBlack.remove();
+                    $green.attr("d", "");
+                    animateSphere($red, stepTime);
+
+                    setTimeout(function () {
+                        $black.attr("d", "");
+                        animateSphere($purple, stepTime);
+
+                        setTimeout(function () {
+                            $red.attr("d", "");
+                            animateSphere($green, stepTime);
+                            setTimeout(function () {
+                                var $clone = $black.clone();
+                                $clone.attr("class", "black clone");
+                                $green.after($clone);
+                                $newBlack = $(".black.clone");
+                            }, stepTime);
+                        }, stepTime + delay);
+
+                    }, stepTime + delay);
+
+                }, stepTime + delay);
+            }
+
+            function loopedAnimation(stepTime, delay) {
+                fullAnimation(stepTime, delay);
+                setInterval(function () {
+                    fullAnimation(stepTime, delay);
+                }, (stepTime + delay) * 4);
+            }
+
+            loopedAnimation(1500, 500);
+
+        });
+    </script>
+</body>
+
+</html>

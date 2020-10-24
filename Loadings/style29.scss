@@ -1,0 +1,37 @@
+@import "https://fonts.googleapis.com/css?family=Open+Sans";
+
+*, *:before, *:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-size: 62.5%;
+  
+  @media (max-width: 768px) {
+    font-size: 50%;
+  }
+  @media (max-height: 480px) {
+    font-size: 45%;
+  }
+}
+body {
+  background: #3F51B5;
+}
+svg {
+  overflow: visible;
+}
+.sphere {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -20rem;
+  margin-top: -20rem;
+  width: 40rem;
+  height: 40rem;
+  border-radius: 50%;
+  box-shadow: 1rem 1rem 1rem rgba(0,0,0,0.3);
+}

@@ -1,0 +1,335 @@
+// @import "compass/css3";
+
+*, *:before, *:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html, body {
+  font-size: 62.5%;
+  height: 100%;
+}
+$pink: #EA4C88;
+$darkPink: #C32061;
+$semiDarkPink: #DF4982;
+$dist: 20rem;
+$animTime: 2.2s;
+$scaleY: 0.5;
+$easing: cubic-bezier(.83,.28,.35,1.02);
+$animStep1: 0.5s;
+$animStep1Delay: 0.2s;
+$animStep1Total: $animStep1 + $animStep1Delay;
+body {
+  background: radial-gradient(center, #FCFDFF, #DDEFFF);
+}
+.demo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -15.5rem;
+  margin-top: -27.5rem;
+  width: 31rem;
+  height: 55rem;
+  background: $pink;
+  overflow: hidden;
+  
+  &__checkbox {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    opacity: 0;
+  }
+  
+  &__login-label {
+    z-index: 2;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -10rem;
+    margin-top: -2.2rem;
+    width: 20rem;
+    height: 4.4rem;
+    cursor: pointer;
+    
+    .demo__checkbox:checked ~ & {
+      display: none;
+    }
+  }
+  
+  &__somewhat {
+    position: absolute;
+    width: 0.6rem;
+    height: 0.6rem;
+    left: 1rem;
+    top: 0.7rem;
+    background: #fff;
+    border-radius: 50%;
+    color: #fff;
+    box-shadow: 0.8rem 0, 1.6rem 0, 2.4rem 0, 3.2rem 0;
+  }
+  
+  &__time {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size: 1.2rem;
+    top: 0.5rem;
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  &__battery {
+    position: absolute;
+    right: 0.6rem;
+    top: 0.5rem;
+    width: 2.2rem;
+    height: 1rem;
+    border: 1px solid #fff;
+    border-radius: 0.2rem;
+    overflow: hidden;
+    
+    &:after {
+      content: "";
+      display: block;
+      width: 40%;
+      height: 100%;
+      background: #fff;
+    }
+  }
+  
+  &__login {
+    position: absolute;
+    width: 20rem;
+    height: 4.4rem;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    line-height: 4rem;
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 2.5rem;
+    border: 0.2rem solid #fff;
+    will-change: width, height, border-radius, opacity;
+    
+    .demo__checkbox:checked ~ & {
+      transition: font-size 0.2s, width $animStep1, height $animStep1, border-radius 0.3s, opacity 0s $animStep1Total, border-width 0.3s;
+      font-size: 0;
+      width: 8.6rem;
+      height: 8.6rem;
+      border-radius: 50%;
+      opacity: 0;
+      border-width: 0.7rem;
+    }
+  }
+  
+  &__ball-cont {
+    z-index: -1;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -4.3rem;
+    margin-top: -5rem;
+    width: 8.6rem;
+    height: 10rem;
+    font-size: 10rem;
+    line-height: 1;
+    color: #fff;
+    transform-origin: 50% 300%;
+    opacity: 0;
+    will-change: opacity, transform;
+    
+    .demo__checkbox:checked ~ & {
+      z-index: 2;
+      opacity: 1;
+      transition: opacity $animStep1Delay $animStep1;
+      animation: ballContAnim $animTime $animStep1Total $easing forwards;
+      
+      .demo__ball {
+        animation: ballAnim $animTime $animStep1Total $easing forwards;
+      }
+    }
+  }
+  
+  &__ball {
+    cursor: pointer;
+    transition: color 0.3s;
+    
+    &:hover {
+      color: rgba(255,255,255,0.7);
+    }
+  }
+  
+  &__footer {
+    z-index: 1;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 3rem;
+    background: $semiDarkPink;
+    transform: scaleY(0);
+    transform-origin: 50% 100%;
+    will-change: transform;
+    
+    &:before {
+      z-index: 2;
+      content: "Loading";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2rem;
+      color: #fff;
+    }
+    
+    &:after {
+      z-index: 1;
+      content: "";
+      position: absolute;
+      left: -100%;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      background: $darkPink;
+      will-change: transform;
+    }
+    
+    .demo__checkbox:checked ~ & {
+      transition: transform $animTime * 0.12 $animStep1, height $animTime * 0.16 $animStep1Total + $animTime * 0.84;
+      transform: scale(1);
+      height: 4.5rem;
+      
+      &:before {
+        transition: opacity 0.1s $animTime + $animStep1;
+        opacity: 0;
+      }
+      
+      &:after {
+        animation: progress $animTime $animStep1 forwards;
+      }
+    }
+  }
+  
+  &__twitter {
+    z-index: -2;
+    position: absolute;
+    font-size: 3rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    opacity: 0;
+    cursor: pointer;
+    
+    .demo__checkbox:checked ~ .demo__footer & {
+      transition: transform 0.3s $animTime + $animStep1, opacity 0.1s $animTime + $animStep1, z-index 0 $animTime + $animStep1;
+      z-index: 2;
+      transform: translate(-10rem, -50%);
+      opacity: 1;
+      
+    }
+  }
+  
+  &__reset-label {
+    z-index: -2;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    font-size: 2rem;
+    color: #fff;
+    text-transform: uppercase;
+    opacity: 0;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    
+    .demo__checkbox:checked ~ .demo__footer & {
+      z-index: 2;
+      transition: transform 0.3s $animTime + $animStep1, opacity 0.1s $animTime + $animStep1, z-index 0.1s $animTime + $animStep1;
+      transform: translate(5.5rem, -50%);
+      opacity: 1;
+    }
+  }
+  
+}
+
+@keyframes ballAnim {
+  12% {
+    transform: translateY($dist) rotate(30deg);
+  }
+  16% {
+    transform: translateY($dist) rotate(30deg);
+  }
+  28% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY($dist) rotate(-60deg);
+  }
+  44% {
+    transform: translateY($dist) rotate(-60deg);
+  }
+  56% {
+    transform: translateY(0);
+  }
+  68% {
+    transform: translateY($dist) rotate(140deg);
+  }
+  72% {
+    transform: translateY($dist) rotate(140deg);
+  }
+  84% {
+    transform: translateY(0) rotate(120deg);
+  }
+  100% {
+    transform: translateY(26.2rem) rotate(0);
+  }
+}
+
+@keyframes ballContAnim {
+  12% {
+    transform: scaleY(1);
+  }
+  15% {
+    transform: scaleY($scaleY);
+  }
+  18% {
+    transform: scaleY(1);
+  }
+  40% {
+    transform: scaleY(1);
+  }
+  43% {
+    transform: scaleY($scaleY);
+  }
+  46% {
+    transform: scaleY(1);
+  }
+  68% {
+    transform: scaleY(1);
+  }
+  71% {
+    transform: scaleY($scaleY);
+  }
+  74% {
+    transform: scaleY(1);
+  }
+  84% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scale(0.3);
+  }
+}
+
+@keyframes progress {
+  45% {
+    transform: translateX(30%);
+  }
+  65% {
+    transform: translateX(75%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
